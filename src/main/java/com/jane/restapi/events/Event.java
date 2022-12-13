@@ -2,15 +2,19 @@ package com.jane.restapi.events;
 
 import lombok.*;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Builder //기본생성자X
 @AllArgsConstructor @NoArgsConstructor
 @Getter @Setter
 @EqualsAndHashCode(of="id")
+@Entity
 public class Event {
 
+  @Id @GeneratedValue
   private Integer id;
+
   private String name;
   private String description;
   private LocalDateTime beginEnrollmentDateTime;
@@ -24,6 +28,8 @@ public class Event {
 
   private boolean offline;
   private boolean free;
-  private EventStatus eventStatus = EventStatus.DRAFT;
+
+  @Enumerated(EnumType.STRING) //ORDINAL보다 권장
+  private EventStatus eventStatus;
 
 }

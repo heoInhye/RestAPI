@@ -2,8 +2,10 @@ package com.jane.restapi.events;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,11 +25,17 @@ class EventControllerTest {
   @Autowired
   ObjectMapper objectMapper; //json타입으로 손쉽게 변환가능
 
+  @MockBean
+  EventRepository eventRepository;
+
   @Test
   void createEvent() throws Exception {
     Event event = Event.builder()
                        .name("spring")
                        .build();
+
+    event.setId(1000);
+    Mockito.when(eventRepository.save(event)).thenReturn(event);
 
     mockMvc.perform(
               post("/api/events/")
